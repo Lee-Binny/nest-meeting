@@ -1,7 +1,6 @@
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -10,17 +9,11 @@ import {
 import { Schedule } from '../../schedule/entities/schedule.entity';
 
 @Entity()
-export class User {
+export class Room {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
   @Column({ length: 45 })
-  userId: string;
-
-  @Column({ length: 100 })
-  password: string;
-
-  @Column({ length: 7 })
   name: string;
 
   @CreateDateColumn()
@@ -29,9 +22,6 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @DeleteDateColumn()
-  deletedAt: Date;
-
-  @OneToMany((type) => Schedule, (schedule) => schedule.hostId)
+  @OneToMany((type) => Schedule, (schedule) => schedule.roomId)
   schedule: Schedule[];
 }

@@ -1,22 +1,18 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { GraphQLModule } from '@nestjs/graphql';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { User } from './user/entities/user.entity';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { RoomModule } from './room/room.module';
+import { ScheduleModule } from './schedule/schedule.module';
+import { AttendeeModule } from './attendee/attendee.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
-    }),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      autoSchemaFile: true,
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -25,11 +21,14 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      synchronize: true,
+      synchronize: false,
       logging: true,
-      entities: [User],
+      entities: ['dist/**/*.entity{.ts,.js}'],
     }),
     UserModule,
+    RoomModule,
+    ScheduleModule,
+    AttendeeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
